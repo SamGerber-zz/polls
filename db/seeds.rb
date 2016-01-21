@@ -22,8 +22,10 @@ ActiveRecord::Base.transaction do
   end
 
   User.all.each do |user|
-    choice = AnswerChoice.all.sample(1)[0]
-    Response.create!(user_id: user.id, choice_id: choice.id)
+    Question.all.each do |question|
+      choice = question.choices.sample(1)[0]
+      Response.create!(user_id: user.id, choice_id: choice.id)
+    end
   end
 
 end

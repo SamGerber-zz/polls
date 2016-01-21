@@ -8,8 +8,9 @@
 #
 
 class Response < ActiveRecord::Base
-  validates :user_id, presence: true
+  validates :user_id, presence: true, uniqueness: {scope: :choice_id}
   validates :choice_id, presence: true
+  validate :not_duplicate_response
 
   belongs_to :choice,
     class_name: "AnswerChoice",
@@ -21,8 +22,22 @@ class Response < ActiveRecord::Base
     foreign_key: :user_id,
     primary_key: :id
 
-  has_one :question_scope,
+  has_one :question,
     through: :choice,
     source: :question
 
+  def sibling_responses
+    self.question.responses.where.not(id: self.id)
+  end
+
+  def respondent_already_answered?
+    sibling_responses.exists?(user_id: user_id)
+  end
+
+  private
+
+  def not_duplicate_response
+    !respondent_already_answered?
+  end
+  
 end
