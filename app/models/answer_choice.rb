@@ -10,5 +10,18 @@
 #
 
 class AnswerChoice < ActiveRecord::Base
+  validates :choice, presence: true
+  validates :question_id, presence: true
+
+
+  has_many :responses,
+    class_name: "Response",
+    foreign_key: :choice_id,
+    primary_key: :id
+
+  belongs_to :question,
+    class_name: "Question",
+    foreign_key: :question_id,
+    primary_key: :id
 
 end
