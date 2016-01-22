@@ -25,3 +25,5 @@ class AnswerChoice < ActiveRecord::Base
     primary_key: :id
 
 end
+
+# polls_development= SELECT answer_choices.choice, COUNT(*) FROM answer_choices JOIN responses ON answer_choices.id = responses.choice_id WHERE answer_choices.question_id = 1 GROUP BY answer_choices.choice

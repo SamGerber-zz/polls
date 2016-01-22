@@ -9,13 +9,13 @@
 ActiveRecord::Base.transaction do
 
   20.times do
-    user = User.create!(user_name: Faker::Internet.user_name)
+    user = User.create(user_name: Faker::Internet.user_name)
     rand(3).times do
-      poll = Poll.create!(title: Faker::Company.catch_phrase, author_id: user.id)
+      poll = Poll.create(title: Faker::Company.catch_phrase, author_id: user.id)
       (1+rand(3)).times do
-        question = Question.create!(question: Faker::Hipster.sentence[0...-1].concat("?"), poll_id: poll.id)
+        question = Question.create(question: Faker::Hipster.sentence[0...-1].concat("?"), poll_id: poll.id)
         5.times do
-          AnswerChoice.create!(choice: Faker::Hacker.say_something_smart, question_id: question.id)
+          AnswerChoice.create(choice: Faker::Hacker.say_something_smart, question_id: question.id)
         end
       end
     end
@@ -24,7 +24,7 @@ ActiveRecord::Base.transaction do
   User.all.each do |user|
     Question.all.each do |question|
       choice = question.choices.sample(1)[0]
-      Response.create!(user_id: user.id, choice_id: choice.id)
+      Response.create(user_id: user.id, choice_id: choice.id)
     end
   end
 
